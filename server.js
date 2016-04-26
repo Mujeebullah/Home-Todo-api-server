@@ -21,11 +21,22 @@ app.get( '/', function( req, res) {
 });
 
 app.get( '/todos', function( req, res ){	
-	res.json( "todos working fine" );
+	res.json( todos );
 });
 
 app.get( '/todos/:id', function( req, res) {	
-	res.json( req.params.id );
+	var matchedTodo;
+	todos.forEach( function( todo )	{
+		if( parseInt( req.params.id ) === todo.id ){
+			matchedTodo = todo;
+			return;
+		}
+	});
+	if( matchedTodo ){
+		res.json( matchedTodo );
+	}else{
+		res.status(404).send();
+	}
 });
 
 app.listen( PORT, function(){
